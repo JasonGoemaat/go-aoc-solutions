@@ -1,16 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"slices"
 
 	aoc "github.com/JasonGoemaat/go-aoc/aoc"
 )
 
 func main() {
-	// https://adventofcode.com/2024/day/1
-	fmt.Println("Expecting ")
-	aoc.SolveLocal(part1, part2)
+	// https://adventofcode.com/2024/day/8
+	aoc.Local(part1, "part1", "sample.txt", 2)
+	aoc.Local(part1, "part1", "input.txt", 660)
+	aoc.Local(part2, "part2", "sample.txt", 4)
+	aoc.Local(part2, "part2", "input.txt", 689)
 }
 
 func part1(content string) interface{} {
