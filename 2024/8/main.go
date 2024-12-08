@@ -8,8 +8,8 @@ import (
 
 func main() {
 	// https://adventofcode.com/2024/day/8
-	fmt.Println("Expecting XX, YY for sample")
-	fmt.Println("Expecting XX, YY for input")
+	fmt.Println("Expecting 14, 34 for sample")
+	fmt.Println("Expecting 396, 1200 for input")
 	aoc.SolveLocal(part1, part2)
 }
 
