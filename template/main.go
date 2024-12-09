@@ -5,19 +5,17 @@ import (
 )
 
 func main() {
-	// https://adventofcode.com/2024/day/9
+	// https://adventofcode.com/2015/day/X
 	aoc.Local(part1, "part1", "sample.txt", 0)
-	// aoc.Local(part1, "part1", "input.txt", 0)
+	aoc.Local(part1, "part1", "input.txt", 0)
 	// aoc.Local(part2, "part2", "sample.txt", 0)
 	// aoc.Local(part2, "part2", "input.txt", 0)
 }
 
 func part1(contents string) interface{} {
-	var ints = aoc.ParseLinesToInts(aoc.ParseLines(contents))
-	return len(ints)
+	return 0
 }
 
 func part2(contents string) interface{} {
-	var ints = aoc.ParseLinesToInts(aoc.ParseLines(contents))
-	return len(ints)
+	return 0
 }
