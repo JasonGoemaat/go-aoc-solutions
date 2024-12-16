@@ -1,10 +1,10 @@
 # Trying to add bubbletea
 
-Reddit post: https://www.reddit.com/r/adventofcode/comments/1hem5hg/2024_day_15_part_1_go_move_little_robot/
-
-His advent repo: https://github.com/sirgwain/advent-of-code-2024
-
-BubbleTea: https://github.com/charmbracelet/bubbletea
+* Reddit post: https://www.reddit.com/r/adventofcode/comments/1hem5hg/2024_day_15_part_1_go_move_little_robot/
+* sirgwain's advent repo: https://github.com/sirgwain/advent-of-code-2024
+* BubbleTea: https://github.com/charmbracelet/bubbletea
+* Blog explaining commands: https://charm.sh/blog/commands-in-bubbletea/
+* lipgloss: https://github.com/charmbracelet/lipgloss
 
 Installed BubbleTea with:
 
@@ -232,3 +232,18 @@ from the solver, then send a `render` command.
 
 The `render` command will render things and if automatic is selected it
 will send another `step` command.
+
+Yeah, that works pretty well.   I added delay property to the model.
+GO idiosyncrasy - I had to use `func (m *model)` and not `func (m model)`
+when I did the update or things I changed in the function would not update
+the existing struct as it's passed by value.   No wonder there were warning
+squigglies :)
+
+So the puzzle starts stopped.   Here are the commands:
+
+* `S` - single step (pauses if running auto)
+* `SPACE` - toggle auto/pause
+* `UP/DOWN` - change delay by a factor of 10 (starts at 10ms, down to 1, up to 1000)
+* `ESC/CTRL+C` - quit
+
+

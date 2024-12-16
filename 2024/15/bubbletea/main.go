@@ -12,6 +12,9 @@ import (
 var x model
 
 func main() {
+	// showcolors()
+	// showcolors2()
+	// showascii()
 	tea5()
 	return
 
