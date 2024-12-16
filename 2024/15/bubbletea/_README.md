@@ -150,3 +150,85 @@ func (m tea2model) View() string {
 	return sb.String()
 }
 ```
+
+## Process
+
+How sirgwain does it:
+
+```go
+// run the solver in a gouroutine and Send a message to the bubbletea program to update the viewport on each step
+go func() {
+    // update the UI
+    board.onStep = func() {
+        content := fmt.Sprintf("%s\n%s", board.view(), board.viewSolution())
+        p.Send(tui.UpdateViewport(content, board.width))
+
+        if d.Options.Delay > 0 {
+            time.Sleep(time.Millisecond * time.Duration(d.Options.Delay))
+        }
+
+    }
+
+    board.solve()
+}()
+```
+
+This has a 'board' that represents the puzzle and sets an 'onStep' function.  This function
+sends an ' UpdateViewport' message to the bubbletea program.   I don't think `Run()` is ever
+called on the program, so the updates are done in this loop.
+
+The `board.solve()`  method loops through each step and calls that `onStep()` function
+after each iteration.   So it just runs normally and uses the code in that function to draw
+the display by sending an `updateViewport` message created by that function.
+
+```go
+func (b *day15Board) solve() {
+	for _, dir := range b.moves {
+		b.moveRobot(dir)
+		b.solution = b.gps()
+		if b.onStep != nil {
+			b.onStep()
+		}	
+    }
+}
+
+type updateViewport struct {
+    content string
+    width   int
+    height  int
+}
+
+func UpdateViewport(content string, width int) tea.Msg {
+	return updateViewport{content: content, width: width}
+}
+```
+
+Ah, `tea.Msg` is just `interface{}` so it can be ANYTHING. (maybe not?)
+
+```go
+type Msg interface{}
+```
+
+The reason we have a type declared is so it can be used in our 'Update()' method
+on the model in the switch statement:
+
+```go
+switch msg := msg.(type) {
+case updateViewport:
+```
+
+## Stepping?
+
+I think I want to do it so that I can pause and step through one at a time.
+Undo would be nice also, but would be more of a pain.   Having the previous
+result left or right of the current state would be cool.
+
+To do this I think I need to change my loops so that I have a function that
+will operate on them.  I can have a command that will auto-run.   Model
+will have flags for rendering and automatic.
+
+For automatic, you can send a `step` command which will call the step function
+from the solver, then send a `render` command.
+
+The `render` command will render things and if automatic is selected it
+will send another `step` command.

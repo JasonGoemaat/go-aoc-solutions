@@ -12,7 +12,7 @@ import (
 var x model
 
 func main() {
-	tea2()
+	tea5()
 	return
 
 	// https://adventofcode.com/2015/day/X
