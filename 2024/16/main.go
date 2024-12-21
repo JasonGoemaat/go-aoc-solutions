@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	// https://adventofcode.com/2015/day/X
+	// https://adventofcode.com/2024/day/16
 	aoc.Local(part1, "part1", "sample.aoc", 7036)
 	aoc.Local(part1, "part1", "sample2.aoc", 11048)
 	aoc.Local(part1, "part1", "input.aoc", 73432)

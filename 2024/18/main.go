@@ -13,10 +13,10 @@ import (
 var visualize = false
 
 func main() {
-	// https://adventofcode.com/2015/day/X
-	// aoc.Local(func(contents string) interface{} { return part1(contents, 7, 12) }, "part1", "sample.aoc", 22)
-	// aoc.Local(func(contents string) interface{} { return part1(contents, 71, 1024) }, "part1", "input.aoc", 336)
-	// aoc.Local(func(contents string) interface{} { return part2(contents, 7, 0) }, "part2", "sample.aoc", "6,1")
+	// https://adventofcode.com/2024/day/18
+	aoc.Local(func(contents string) interface{} { return part1(contents, 7, 12) }, "part1", "sample.aoc", 22)
+	aoc.Local(func(contents string) interface{} { return part1(contents, 71, 1024) }, "part1", "input.aoc", 336)
+	aoc.Local(func(contents string) interface{} { return part2(contents, 7, 0) }, "part2", "sample.aoc", "6,1")
 	aoc.Local(func(contents string) interface{} { return part2(contents, 71, 0) }, "part2", "input.aoc", "24,30")
 }
 
@@ -58,6 +58,9 @@ type MyState struct {
 	final      *astar.AStarNode
 }
 
+// Render function, takes state and returns stylized (using lipgloss)
+// string representing the grid.   Calculates it's own path for
+// part 1 since it
 func (state *MyState) Render() string {
 	// path to end if we have it, or most recent check if stepping
 	as := state.astar

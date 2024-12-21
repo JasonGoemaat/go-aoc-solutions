@@ -1,4 +1,4 @@
-module github.com/JasonGoemaat/go-aoc-2024
+module github.com/JasonGoemaat/go-aoc-solutions
 
 go 1.23.2
 
