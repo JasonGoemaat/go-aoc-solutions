@@ -12,10 +12,10 @@ import (
 var x model
 
 func main() {
-	// showcolors()
+	showcolors()
 	// showcolors2()
 	// showascii()
-	tea5()
+	// tea5()
 	return
 
 	// https://adventofcode.com/2015/day/X
