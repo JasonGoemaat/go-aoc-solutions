@@ -225,7 +225,7 @@ func NewMyState(contents string, savingsRequired int) *MyState {
 			end.Y = r
 		}
 	}
-	as := astar.NewAStar(area, start, end, ".SE")
+	as := astar.NewAStar(area, start, end)
 	tm = MyState{Title: "Day 20", Contents: contents, astar: as, savingsRequired: savingsRequired}
 	tm.final = as.GetShortestPath()
 	tm.current = tm.final

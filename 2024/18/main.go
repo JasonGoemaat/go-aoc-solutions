@@ -174,7 +174,7 @@ func NewMyState(contents string, size, count int) *MyState {
 		sb.WriteString(line)
 	}
 	area := aoc.ParseArea(sb.String())
-	astar := astar.NewAStar(area, astar.AStarPosition{X: 0, Y: 0}, astar.AStarPosition{X: area.Width - 1, Y: area.Height - 1}, ".")
+	astar := astar.NewAStar(area, astar.AStarPosition{X: 0, Y: 0}, astar.AStarPosition{X: area.Width - 1, Y: area.Height - 1})
 	tiles := aoc.ParseIntsPerLine(contents)
 	if count > 0 {
 		tiles = tiles[0:count]
