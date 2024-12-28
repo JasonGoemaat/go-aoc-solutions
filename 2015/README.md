@@ -5,7 +5,12 @@ https://adventofcode.com/2015
 ## Day 11
 
 I started to program something, then realized doing it manually was easiest
-after looking at the samples.  See comments in the code.
+after looking at the samples, see comments in the code.  All criteria can
+be satisfied using just the last 5 letters as one of the samples given has
+`aabcc` at the end which is the lowest way to update the last 5 characters.
+We do need to worry because if the first 4 are a double and straight for
+example we only need to look at the last 2.  My code probably isn't
+perfect, but works for now.
 
 ## Day 12
 

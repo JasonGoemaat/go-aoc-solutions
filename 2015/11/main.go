@@ -5,13 +5,16 @@ import (
 )
 
 func main() {
-	// https://adventofcode.com/2024/day/XX
-	aoc.Local(part1, "part1", "sample.aoc", 0)
-	aoc.Local(part1, "part1", "input.aoc", 0)
-	// aoc.Local(part2, "part2", "sample.aoc", 0)
-	// aoc.Local(part2, "part2", "input.aoc", 0)
+	// https://adventofcode.com/2015/day/11
+	aoc.Local(part1, "part1", "sample.aoc", "ghjaabcc")
+	aoc.Local(part1, "part1", "input.aoc", "hepxxyzz")
+	aoc.Local(part2, "part2", "sample.aoc", "ghjbbcdd")
+	aoc.Local(part2, "part2", "input.aoc", "heqaabcc")
 }
 
+// increments a character from a-z, if past 'z', recursively call for the
+// previous character.   Final incremented character will set the remaining
+// characters to the right to 'a' as a reset.
 func incrementPassword(password []byte, index int) {
 	password[index]++
 	if password[index] > 'z' {
@@ -36,6 +39,9 @@ func handleInvalidPassword(password []byte) bool {
 }
 
 func goodPassword(password []byte) bool {
+	// make sure it's valid
+	handleInvalidPassword(password)
+
 	// scan for incrementing 3 bytes
 	doubleIndex1, doubleIndex2 := -1, -1
 	straightIndex := -1
@@ -43,7 +49,7 @@ func goodPassword(password []byte) bool {
 		if i > 1 && straightIndex == -1 {
 			if password[i-1] == (password[i]-1) && password[i-2] == (password[i]-2) {
 				straightIndex = i
-				continue
+				// continue // straight can overlap doubles
 			}
 		}
 		if password[i] == password[i-1] {
@@ -52,7 +58,7 @@ func goodPassword(password []byte) bool {
 				continue
 			}
 			if doubleIndex2 == -1 && doubleIndex1 < (i-1) {
-				doubleIndex1 = i
+				doubleIndex2 = i
 				continue
 			}
 		}
@@ -88,24 +94,58 @@ func goodPassword(password []byte) bool {
 	// digits are 'z', we need to roll-over the 'x'.   Since we only need the first 5
 	// to form the lowest 'aabcc', we just roll the 'p' up to 'q' and use 'aabcc' for
 	// 'heqaabcc'
-	return doubleIndex1 > 0 && doubleIndex2 > 0 && straightIndex > 0
+	good := doubleIndex1 > 0 && doubleIndex2 > 0 && straightIndex > 0
+	return good
+}
+
+// Meant to update characters from right to left.  This increments to the next
+// 'helpful' character.  So if we have 'ghh', we can increment to 'ghi' because
+// that forms a straight.   If we have 'ghi' it will do no good to increment
+// to 'ghj', so we update the 'h' to 'i', and set the 'i' to the same which is
+// also 'i' because it forms a pair.   This will work like this:
+// 'ghi' -> 'gii' -> 'gij' -> 'gjj' -> 'gjk' -> 'gkk' ... 'gzz'.  When we get
+// to that, the 'z' wraps around so we can fallback to the incrementPassword
+// method.
+func updatePassword(password []byte, index int) {
+	// if past the last 4 characters, do simple increment
+	if index < (len(password) - 4) {
+		incrementPassword(password, index)
+		return
+	}
+
+	// if character is less than previous, set to previous
+	if password[index] < password[index-1] {
+		password[index] = password[index-1]
+		return
+	}
+
+	// increment, if more than one ahead, update previous and set it and all
+	// right to 'a'
+	password[index]++
+	if password[index] > 'z' || (password[index] > (password[index-1] + 1)) {
+		updatePassword(password, index-1)
+		for i := index; i < len(password); i++ {
+			password[i] = byte('a')
+		}
+		return
+	}
 }
 
 // simple, 1 input, first output
 func part1(contents string) interface{} {
-	bytes := []byte(contents)
-	for true {
-		if handleInvalidPassword(bytes) {
-			continue
-		}
-		if goodPassword(bytes) {
-			break
-		}
-		incrementPassword(bytes, len(bytes)-1)
+	password := []byte(contents)
+
+	// start off with increment
+	incrementPassword(password, len(password)-1)
+
+	// loop until we find a result
+	for !goodPassword(password) {
+		updatePassword(password, len(password)-1)
 	}
-	return string(bytes)
+	return string(password)
 }
 
 func part2(contents string) interface{} {
-	return 0
+	first := part1(contents).(string)
+	return part1(first)
 }
